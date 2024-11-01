@@ -1,0 +1,8 @@
+# .gitignore
+
+# Ignore specific CSV file
+app/src/의약품안전사용서비스(DUR)_병용금기 품목리스트 2020.9.csv
+
+# Ignore __pycache__ directories and their contents
+__pycache__/
+
