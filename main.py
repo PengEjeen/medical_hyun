@@ -1,15 +1,22 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.encoders import jsonable_encoder
-import os
-from app import datactl  
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from app import datactl
+from starlette.requests import Request
 
+import os
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+templates = Jinja2Templates(directory="templates")
 
 origins = [
     "http://localhost:8080",
-    "http://localhost:8000"
+    "http://localhost:8000",
+    "*"
     # 추가로 허용할 도메인들
 ]
 
@@ -25,6 +32,21 @@ app.add_middleware(
 async def getTest():
     message = "hello"
     return{"message": message}
+
+# 제품 데이터 페이지
+@app.get("/product_page", response_class=HTMLResponse)
+async def get_product_page(request: Request):
+    return templates.TemplateResponse("product.html", {"request": request})
+
+# 성분 데이터 페이지
+@app.get("/ingredient_page", response_class=HTMLResponse)
+async def get_ingredient_page(request: Request):
+    return templates.TemplateResponse("ingredient.html", {"request": request})
+
+# 전체 데이터 페이지
+@app.get("/all_page", response_class=HTMLResponse)
+async def get_all_page(request: Request):
+    return templates.TemplateResponse("all.html", {"request": request})
 
 @app.get("/product")
 async def getProduct(company=None, start_date="2004-01-16", end_date="2020-07-10"):
