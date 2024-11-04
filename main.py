@@ -73,7 +73,7 @@ async def geCompanyColumn():
     return {"data": data}
 
 if __name__ == "__main__":
-   #inner_ip = os.popen("hostname -I").read()
+    inner_ip = os.popen("hostname -I").read()
     port = str(input("insert port: "))
-    run = f"sudo uvicorn main:app --reload --host=localhost --port={port}"
+    run = f"sudo uvicorn main:app --reload --host={inner_ip} --port={port}"
     os.system(run.replace("\n",""))
