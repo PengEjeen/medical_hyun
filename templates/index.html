@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="static/css/style.css"> <!-- CSS 파일 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js 추가 -->
+</head>
+<body>
+    <div class="header">
+        <h1>Data Visualization Dashboard</h1>
+    </div>
+
+    <div class="sidebar">
+        <a href="#" onclick="loadPage('all_page')">All Charts</a>
+        <a href="#" onclick="loadPage('ingredient_page')">Ingredient Charts</a>
+       <!-- <a href="#" onclick="loadPage('product_page')">Product Charts</a>-->
+    </div>
+
+    <div class="main">
+        <div id="content"> <!-- 콘텐츠가 표시될 영역 -->
+            <h2>Welcome to the Dashboard</h2>
+            <p>Select a page from the sidebar to view charts.</p>
+        </div>
+    </div>
+
+    <script>
+        function loadPage(page) {
+            fetch(`/${page}`) // 각 페이지를 FastAPI에서 fetch
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('content').innerHTML = html;
+
+                    // 각 페이지에서 필요한 JavaScript 파일을 로드합니다.
+                    if (page === 'all_page') {
+                        loadScript('static/js/all.js');
+                    } else if (page === 'ingredient_page') {
+                        loadScript('static/js/ingredient.js');
+                    } else if (page === 'product_page') {
+                        loadScript('static/js/product.js');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading page:', error);
+                });
+        }
+
+        function loadScript(src) {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => console.log(`${src} loaded`);
+            script.onerror = () => console.error(`Error loading script: ${src}`);
+            document.body.appendChild(script); // 동적으로 스크립트 추가
+        }
+    </script>
+</body>
+</html>

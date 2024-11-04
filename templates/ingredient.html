@@ -3,12 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chart.js Example</title>
+    <title>Ingredient Chart Example</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <h1>Ingredient Chart</h1>
+    
+    <!-- 검색 필드 -->
+    <div>
+        <label for="company">Company:</label>
+        <input type="text" id="company" value="경동제약(주)">
+        
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" value="2010-01-01">
+        
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" value="2023-12-31">
+        
+        <button onclick="updateCharts()">Fetch Data</button>
+    </div>
+
+    <!-- 차트를 표시할 컨테이너 -->
     <div id="charts-container"></div>
 
     <script src="static/js/ingredient.js"></script>
+    <script>
+        function updateCharts() {
+            // 입력 필드에서 값을 가져와 fetchData 호출
+            const company = document.getElementById('company').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            // 차트 컨테이너 비우기
+            document.getElementById('charts-container').innerHTML = '';
+
+            // 새 데이터를 가져와 차트 생성
+            fetchData(company, startDate, endDate);
+        }
+    </script>
 </body>
 </html>

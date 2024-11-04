@@ -1,36 +1,51 @@
-async function fetchData() {
+function updateCharts() {
+    const company = document.getElementById('company').value;
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    document.getElementById('charts-container').innerHTML = '';
+
+    fetchData(company, startDate, endDate);
+}
+
+async function fetchData(company = '경동제약(주)', startDate = '2023-01-01', endDate = '2023-12-31') {
     try {
-        const response = await fetch('/product?company=경동제약(주)'); // API 경로 수정
+        // 쿼리 파라미터 추가
+        const queryParams = new URLSearchParams({
+            company: company,
+            start_date: startDate,
+            end_date: endDate
+        });
+
+        // 수정된 API 요청 경로
+        const response = await fetch(`/product?${queryParams.toString()}`);
+        console.log(response)
         const data = await response.json();
 
         // 데이터 확인
         console.log(data);
 
-        // 데이터 형식 확인 및 처리
+        // 기존 데이터 처리 로직
         if (data && data.data) {
-            // count_result 처리
             if (data.data.count_result) {
                 data.data.count_result.forEach(item => {
                     const company = item.company;
-                    const labels = item.data.product; // x축 레이블
-                    const chartData = item.data.count; // y축 데이터
+                    const labels = item.data.product;
+                    const chartData = item.data.count;
                     
-                    // 데이터가 비어있지 않을 경우에만 차트를 생성
                     if (labels.length > 0 && chartData.length > 0) {
                         createBarChart(company, labels, chartData);
                     }
                 });
             }
 
-            // time_result 처리
             if (data.data.time_result) {
                 data.data.time_result.forEach(item => {
                     const company = item.company;
                     const product = item.product;
-                    const labels = item.data.time; // x축 레이블
-                    const chartData = item.data.count; // y축 데이터
+                    const labels = item.data.time;
+                    const chartData = item.data.count;
 
-                    // 데이터가 비어있지 않을 경우에만 차트를 생성
                     if (labels.length > 0 && chartData.length > 0) {
                         createLineChart(company + ' - ' + product, labels, chartData);
                     }

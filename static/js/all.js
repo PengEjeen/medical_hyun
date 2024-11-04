@@ -1,6 +1,16 @@
-async function fetchData() {
+function updateCharts() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    document.getElementById('charts-container').innerHTML = '';
+
+    fetchData(startDate, endDate);
+}
+
+async function fetchData(startDate, endDate) {
     try {
-        const response = await fetch('/all'); // API 경로 수정
+        // 날짜를 쿼리 매개변수로 포함하여 API 호출
+        const response = await fetch(`/all?start_date=${startDate}&end_date=${endDate}`); // API 경로 수정
         const data = await response.json();
 
         // 데이터 확인

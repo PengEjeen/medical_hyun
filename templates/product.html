@@ -7,8 +7,37 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <h1>Product Data Visualization</h1>
+
+    <!-- 입력 필드와 버튼 추가 -->
+    <label for="company">Company:</label>
+    <input type="text" id="company" placeholder="Enter company name" value="경동제약(주)">
+    
+    <label for="start-date">Start Date:</label>
+    <input type="date" id="start-date" value="2010-01-01">
+    
+    <label for="end-date">End Date:</label>
+    <input type="date" id="end-date" value="2023-12-31">
+    
+    <button onclick="updateCharts()">Fetch Data</button>
+
+    <!-- 차트 컨테이너 -->
     <div id="charts-container"></div>
 
     <script src="static/js/product.js"></script>
+    <script>
+        function updateCharts() {
+            // 입력 필드에서 값을 가져오기
+            const company = document.getElementById('company').value;
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+
+            // charts-container 초기화
+            document.getElementById('charts-container').innerHTML = '';
+
+            // fetchData 함수 호출
+            fetchData(company, startDate, endDate);
+        }
+    </script>
 </body>
 </html>
